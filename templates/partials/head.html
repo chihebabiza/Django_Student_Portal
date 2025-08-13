@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,14 +10,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <script defer src="{% static 'js/script.js' %}"></script>
-    <script defer>
-      setTimeout(() => {
-        document
-          .querySelectorAll(".alert-auto-hide")
-          .forEach((el) => el.remove());
-      }, 3000);
-    </script>
   </head>
 </html>
