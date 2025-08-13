@@ -1,0 +1,110 @@
+{% include 'partials/head.html' %}
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+  {% include 'partials/navbar.html' %}
+
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold">{{ student.first_name|default:student.username }}'s Wishlist</h2>
+        <a href="{% url 'administration:students_list' %}" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+          <i class="fas fa-arrow-left mr-2"></i>Back to Students
+        </a>
+      </div>
+
+      <!-- Student Info -->
+      <div class="bg-white p-6 rounded-lg shadow mb-6">
+        <div class="flex items-center space-x-4">
+          <div class="bg-blue-100 rounded-full p-4">
+            <i class="fas fa-user text-blue-600 text-2xl"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-semibold">
+              {{ student.first_name|default:student.username }}
+              {% if student.last_name %}{{ student.last_name }}{% endif %}
+            </h3>
+            <div class="text-gray-600">{{ student.email }}</div>
+            <div class="text-sm text-gray-500">Member since {{ student.date_joined|date:"M d, Y" }}</div>
+          </div>
+        </div>
+      </div>
+
+      {% if wishlist_items %}
+        <div class="space-y-6">
+          {% for item in wishlist_items %}
+            <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+              <div class="flex justify-between items-start">
+                <div class="flex-1">
+                  <div class="flex items-center mb-2">
+                    <h3 class="text-xl font-bold mr-3">{{ item.project.title }}</h3>
+                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                      {{ item.project.get_category_display }}
+                    </span>
+                    <span class="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded-full ml-2">
+                      {{ item.project.get_status_display }}
+                    </span>
+                  </div>
+                  
+                  <p class="text-gray-600 mb-3">{{ item.project.description|truncatewords:30 }}</p>
+                  
+                  <div class="flex flex-wrap gap-4 text-sm text-gray-500 mb-3">
+                    <span><i class="fas fa-user mr-1"></i>{{ item.project.supervisor }}</span>
+                    <span><i class="fas fa-clock mr-1"></i>{{ item.project.duration }}</span>
+                    <span><i class="fas fa-users mr-1"></i>Max {{ item.project.max_students }} student{{ item.project.max_students|pluralize }}</span>
+                  </div>
+
+                  {% if item.notes %}
+                    <div class="bg-yellow-50 p-3 rounded border-l-4 border-yellow-300 mb-3">
+                      <p class="text-sm text-gray-700"><strong>Student's notes:</strong> {{ item.notes }}</p>
+                    </div>
+                  {% endif %}
+
+                  <div class="text-xs text-gray-400">
+                    Added to wishlist on {{ item.added_at|date:"M d, Y H:i" }}
+                  </div>
+                </div>
+
+                <div class="ml-4">
+                  <a href="{% url 'projects:project_detail' item.project.pk %}" 
+                     class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm">
+                    View Project Details
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="mt-8 bg-white p-6 rounded-lg shadow">
+          <h3 class="text-lg font-semibold mb-2">Wishlist Summary</h3>
+          <div class="grid md:grid-cols-3 gap-4 text-sm">
+            <div>
+              <span class="font-semibold text-gray-600">Total Items:</span>
+              <span class="text-gray-700">{{ wishlist_items|length }}</span>
+            </div>
+            <div>
+              <span class="font-semibold text-gray-600">Most Recent:</span>
+              <span class="text-gray-700">{{ wishlist_items.0.added_at|date:"M d, Y" }}</span>
+            </div>
+            <div>
+              <span class="font-semibold text-gray-600">Categories:</span>
+              <span class="text-gray-700">
+                {% regroup wishlist_items by project.category as categories %}
+                {{ categories|length }} different
+              </span>
+            </div>
+          </div>
+        </div>
+      {% else %}
+        <div class="text-center py-12">
+          <i class="fas fa-heart text-4xl text-gray-400 mb-4"></i>
+          <h3 class="text-xl font-semibold text-gray-600 mb-2">No Wishlist Items</h3>
+          <p class="text-gray-500">This student hasn't added any projects to their wishlist yet.</p>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+
+  {% include 'partials/footer.html' %}
+</body>
+</html>

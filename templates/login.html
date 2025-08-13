@@ -1,7 +1,6 @@
 {% include 'partials/head.html' %}
 
 <body class="bg-gray-50 flex flex-col min-h-screen">
-  {% include 'partials/alert.html' %}
   
   <!-- Main Content -->
   <main class="flex-grow flex items-center justify-center px-4 py-8">
@@ -11,18 +10,10 @@
         <h2 class="text-2xl font-bold">Login to Your Account</h2>
       </div>
 
-      {% if form.errors or error %}
+      {% if messages %}
       <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-        {% if error %}
-          {{ error }}
-        {% endif %}
-        {% for field in form %}
-          {% for error in field.errors %}
-            {{ error }}
-          {% endfor %}
-        {% endfor %}
-        {% for error in form.non_field_errors %}
-          {{ error }}
+        {% for message in messages %}
+          {{ message }}
         {% endfor %}
       </div>
       {% endif %}
@@ -32,13 +23,12 @@
         <div>
           <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
           <input
-            type="email"
+            type="text"
             id="email"
             name="email"
             required
             class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="your@email.com"
-            value="{{ form.email.value|default:'' }}"
+            placeholder="username or email"
           />
         </div>
 

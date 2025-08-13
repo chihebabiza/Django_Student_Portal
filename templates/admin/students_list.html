@@ -1,0 +1,90 @@
+{% include 'partials/head.html' %}
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+  {% include 'partials/navbar.html' %}
+
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold">Students & Wishlists</h2>
+        <a href="{% url 'administration:admin_dashboard' %}" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+          <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+        </a>
+      </div>
+
+      {% if students %}
+        <div class="bg-white rounded-lg shadow overflow-hidden">
+          <table class="min-w-full">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Wishlist Items</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Join Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              {% for student in students %}
+                <tr class="hover:bg-gray-50">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="bg-blue-100 rounded-full p-2 mr-3">
+                        <i class="fas fa-user text-blue-600"></i>
+                      </div>
+                      <div>
+                        <div class="text-sm font-medium text-gray-900">
+                          {{ student.first_name|default:student.username }}
+                          {% if student.last_name %}{{ student.last_name }}{% endif %}
+                        </div>
+                        <div class="text-sm text-gray-500">{{ student.username }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {{ student.email }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                 {% if student.wishlist_count > 5 %}bg-red-100 text-red-800
+                                 {% elif student.wishlist_count > 2 %}bg-yellow-100 text-yellow-800
+                                 {% elif student.wishlist_count > 0 %}bg-green-100 text-green-800
+                                 {% else %}bg-gray-100 text-gray-800{% endif %}">
+                      {{ student.wishlist_count }} item{{ student.wishlist_count|pluralize }}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{ student.date_joined|date:"M d, Y" }}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    {% if student.wishlist_count > 0 %}
+                      <a href="{% url 'administration:student_wishlist_view' student.id %}" 
+                         class="text-blue-600 hover:text-blue-900">
+                        <i class="fas fa-eye mr-1"></i>View Wishlist
+                      </a>
+                    {% else %}
+                      <span class="text-gray-400">No wishlist</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-6 text-sm text-gray-600">
+          <p>Showing {{ students|length }} student{{ students|length|pluralize }} total</p>
+        </div>
+      {% else %}
+        <div class="text-center py-12">
+          <i class="fas fa-users text-4xl text-gray-400 mb-4"></i>
+          <h3 class="text-xl font-semibold text-gray-600 mb-2">No Students Found</h3>
+          <p class="text-gray-500">No students have registered yet.</p>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+
+  {% include 'partials/footer.html' %}
+</body>
+</html>

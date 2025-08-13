@@ -1,0 +1,133 @@
+{% include 'partials/head.html' %}
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+  {% include 'partials/navbar.html' %}
+
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold">Admin Dashboard</h2>
+        <div class="text-sm text-gray-600">
+          Welcome back, {{ user.first_name|default:user.username }}!
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="grid md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex items-center">
+            <div class="bg-blue-100 p-3 rounded-full">
+              <i class="fas fa-bullhorn text-blue-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <div class="text-2xl font-bold">{{ total_announcements }}</div>
+              <div class="text-gray-600">Announcements</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex items-center">
+            <div class="bg-green-100 p-3 rounded-full">
+              <i class="fas fa-project-diagram text-green-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <div class="text-2xl font-bold">{{ total_projects }}</div>
+              <div class="text-gray-600">Projects</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex items-center">
+            <div class="bg-purple-100 p-3 rounded-full">
+              <i class="fas fa-users text-purple-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <div class="text-2xl font-bold">{{ total_students }}</div>
+              <div class="text-gray-600">Students</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex items-center">
+            <div class="bg-red-100 p-3 rounded-full">
+              <i class="fas fa-heart text-red-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <div class="text-2xl font-bold">{{ total_wishlists }}</div>
+              <div class="text-gray-600">Wishlist Items</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="bg-white p-6 rounded-lg shadow mb-8">
+        <h3 class="text-xl font-bold mb-4">Quick Actions</h3>
+        <div class="flex flex-wrap gap-4">
+          <a href="{% url 'announcements:new' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <i class="fas fa-plus mr-2"></i>New Announcement
+          </a>
+          <a href="{% url 'projects:create_project' %}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            <i class="fas fa-plus mr-2"></i>New Project
+          </a>
+          <a href="{% url 'projects:admin_project_list' %}" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+            <i class="fas fa-cogs mr-2"></i>Manage Projects
+          </a>
+          <a href="{% url 'administration:students_list' %}" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">
+            <i class="fas fa-users mr-2"></i>View Students
+          </a>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Recent Announcements -->
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-xl font-bold mb-4">Recent Announcements</h3>
+          {% if recent_announcements %}
+            <div class="space-y-3">
+              {% for announcement in recent_announcements %}
+                <div class="border-l-4 border-blue-500 pl-4">
+                  <div class="font-semibold">{{ announcement.title }}</div>
+                  <div class="text-sm text-gray-600">{{ announcement.get_display_display }} • {{ announcement.datetime|date:"M d, Y" }}</div>
+                </div>
+              {% endfor %}
+            </div>
+            <div class="mt-4">
+              <a href="{% url 'announcements:index' %}" class="text-blue-600 hover:text-blue-800 text-sm">View all announcements →</a>
+            </div>
+          {% else %}
+            <p class="text-gray-500">No announcements yet.</p>
+          {% endif %}
+        </div>
+
+        <!-- Popular Projects -->
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-xl font-bold mb-4">Popular Projects</h3>
+          {% if popular_projects %}
+            <div class="space-y-3">
+              {% for project in popular_projects %}
+                <div class="border-l-4 border-green-500 pl-4">
+                  <div class="font-semibold">{{ project.title }}</div>
+                  <div class="text-sm text-gray-600">
+                    {{ project.get_category_display }} • {{ project.wishlist_count }} wishlist{{ project.wishlist_count|pluralize }}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            <div class="mt-4">
+              <a href="{% url 'projects:admin_project_list' %}" class="text-green-600 hover:text-green-800 text-sm">Manage all projects →</a>
+            </div>
+          {% else %}
+            <p class="text-gray-500">No projects yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {% include 'partials/footer.html' %}
+</body>
+</html>

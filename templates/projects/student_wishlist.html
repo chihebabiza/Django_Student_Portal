@@ -1,0 +1,80 @@
+{% include 'partials/head.html' %}
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+  {% include 'partials/navbar.html' %}
+
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold">My Wishlist</h2>
+        <a href="{% url 'projects:project_list' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+          <i class="fas fa-arrow-left mr-2"></i>Back to Projects
+        </a>
+      </div>
+
+      {% if wishlist_items %}
+        <div class="space-y-6">
+          {% for item in wishlist_items %}
+            <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow">
+              <div class="flex justify-between items-start">
+                <div class="flex-1">
+                  <div class="flex items-center mb-2">
+                    <h3 class="text-xl font-bold mr-3">{{ item.project.title }}</h3>
+                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                      {{ item.project.get_category_display }}
+                    </span>
+                  </div>
+                  
+                  <p class="text-gray-600 mb-3">{{ item.project.description|truncatewords:30 }}</p>
+                  
+                  <div class="flex flex-wrap gap-4 text-sm text-gray-500 mb-3">
+                    <span><i class="fas fa-user mr-1"></i>{{ item.project.supervisor }}</span>
+                    <span><i class="fas fa-clock mr-1"></i>{{ item.project.duration }}</span>
+                    <span><i class="fas fa-users mr-1"></i>Max {{ item.project.max_students }} student{{ item.project.max_students|pluralize }}</span>
+                  </div>
+
+                  {% if item.notes %}
+                    <div class="bg-yellow-50 p-3 rounded border-l-4 border-yellow-300 mb-3">
+                      <p class="text-sm text-gray-700"><strong>Your notes:</strong> {{ item.notes }}</p>
+                    </div>
+                  {% endif %}
+
+                  <div class="text-xs text-gray-400">
+                    Added to wishlist on {{ item.added_at|date:"M d, Y" }}
+                  </div>
+                </div>
+
+                <div class="flex flex-col space-y-2 ml-4">
+                  <a href="{% url 'projects:project_detail' item.project.pk %}" 
+                     class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm text-center">
+                    View Details
+                  </a>
+                  <a href="{% url 'projects:remove_from_wishlist' item.project.pk %}" 
+                     class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm text-center">
+                    <i class="fas fa-trash mr-1"></i>Remove
+                  </a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="mt-8 text-center text-gray-600">
+          <p>You have {{ wishlist_items|length }} project{{ wishlist_items|length|pluralize }} in your wishlist.</p>
+        </div>
+      {% else %}
+        <div class="text-center py-12">
+          <i class="fas fa-heart text-4xl text-gray-400 mb-4"></i>
+          <h3 class="text-xl font-semibold text-gray-600 mb-2">Your Wishlist is Empty</h3>
+          <p class="text-gray-500 mb-6">Start exploring projects and add the ones you're interested in to your wishlist.</p>
+          <a href="{% url 'projects:project_list' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+            <i class="fas fa-arrow-left mr-2"></i>Back to Projects
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+
+  {% include 'partials/footer.html' %}
+</body>
+</html>

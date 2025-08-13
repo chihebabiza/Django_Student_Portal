@@ -54,6 +54,8 @@
       <p class="mt-2 text-gray-600">No announcements found</p>
     </div>
     {% endif %}
+    
+    <!-- Admin Actions -->
     {% if user.is_authenticated and user.role == 'admin' %}
     <div class="mt-8 text-center">
       <a href="{% url 'announcements:new' %}" class="bg-blue-800 text-white px-4 py-2 rounded hover:bg-blue-700 inline-block">

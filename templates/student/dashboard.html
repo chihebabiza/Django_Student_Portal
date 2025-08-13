@@ -1,0 +1,116 @@
+{% include 'partials/head.html' %}
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+  {% include 'partials/navbar.html' %}
+
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold">Student Dashboard</h2>
+        <div class="text-sm text-gray-600">
+          Welcome back, {{ user.first_name|default:user.username }}!
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="grid md:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex items-center">
+            <div class="bg-green-100 p-3 rounded-full">
+              <i class="fas fa-heart text-green-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <div class="text-2xl font-bold">{{ wishlist_count }}</div>
+              <div class="text-gray-600">Wishlist Items</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex items-center">
+            <div class="bg-blue-100 p-3 rounded-full">
+              <i class="fas fa-project-diagram text-blue-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <div class="text-2xl font-bold">Browse</div>
+              <div class="text-gray-600">Projects</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex items-center">
+            <div class="bg-purple-100 p-3 rounded-full">
+              <i class="fas fa-bullhorn text-purple-600 text-xl"></i>
+            </div>
+            <div class="ml-4">
+              <div class="text-2xl font-bold">Latest</div>
+              <div class="text-gray-600">Announcements</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="bg-white p-6 rounded-lg shadow mb-8">
+        <h3 class="text-xl font-bold mb-4">Quick Actions</h3>
+        <div class="flex flex-wrap gap-4">
+          <a href="{% url 'projects:project_list' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+            <i class="fas fa-search mr-2"></i>Browse Projects
+          </a>
+          <a href="{% url 'projects:student_wishlist' %}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            <i class="fas fa-heart mr-2"></i>My Wishlist ({{ wishlist_count }})
+          </a>
+          <a href="{% url 'announcements:index' %}" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+            <i class="fas fa-bullhorn mr-2"></i>View Announcements
+          </a>
+        </div>
+      </div>
+
+      <!-- Recent Wishlist Items -->
+      {% if recent_wishlist %}
+        <div class="bg-white p-6 rounded-lg shadow">
+          <h3 class="text-xl font-bold mb-4">Recent Wishlist Items</h3>
+          <div class="space-y-4">
+            {% for item in recent_wishlist %}
+              <div class="border-l-4 border-green-500 pl-4 py-2">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <div class="font-semibold">{{ item.project.title }}</div>
+                    <div class="text-sm text-gray-600">{{ item.project.get_category_display }} • {{ item.project.supervisor }}</div>
+                    <div class="text-xs text-gray-400">Added {{ item.added_at|timesince }} ago</div>
+                  </div>
+                  <a href="{% url 'projects:project_detail' item.project.pk %}" 
+                     class="text-blue-600 hover:text-blue-800 text-sm">
+                    View Details →
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+          {% if wishlist_count > 5 %}
+            <div class="mt-4 text-center">
+              <a href="{% url 'projects:student_wishlist' %}" class="text-green-600 hover:text-green-800 text-sm">
+                View all {{ wishlist_count }} wishlist items →
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      {% else %}
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="text-center py-8">
+            <i class="fas fa-heart text-4xl text-gray-400 mb-4"></i>
+            <h3 class="text-xl font-semibold text-gray-600 mb-2">Start Building Your Wishlist</h3>
+            <p class="text-gray-500 mb-6">Explore available projects and add the ones that interest you to your wishlist.</p>
+            <a href="{% url 'projects:project_list' %}" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+              <i class="fas fa-search mr-2"></i>Browse Projects
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </main>
+
+  {% include 'partials/footer.html' %}
+</body>
+</html>

@@ -1,0 +1,78 @@
+{% include 'partials/head.html' %}
+
+<body class="bg-gray-50 flex flex-col min-h-screen">
+  {% include 'partials/navbar.html' %}
+
+  <main class="flex-grow container mx-auto px-4 py-8">
+    <div class="max-w-2xl mx-auto">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold">Create New Announcement</h2>
+        <a href="{% url 'announcements:index' %}" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">
+          <i class="fas fa-arrow-left mr-2"></i>Back to Home
+        </a>
+      </div>
+
+      <div class="bg-white p-8 rounded-lg shadow">
+        <form method="post" class="space-y-6">
+          {% csrf_token %}
+          
+          <div>
+            <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+              Announcement Title
+            </label>
+            {{ form.title }}
+            {% if form.title.errors %}
+              <div class="text-red-600 text-sm mt-1">{{ form.title.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div>
+            <label for="{{ form.content.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+              Content
+            </label>
+            {{ form.content }}
+            {% if form.content.errors %}
+              <div class="text-red-600 text-sm mt-1">{{ form.content.errors }}</div>
+            {% endif %}
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <label for="{{ form.display.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                Category
+              </label>
+              {{ form.display }}
+              {% if form.display.errors %}
+                <div class="text-red-600 text-sm mt-1">{{ form.display.errors }}</div>
+              {% endif %}
+            </div>
+
+            <div>
+              <label for="{{ form.datetime.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+                Date & Time
+              </label>
+              {{ form.datetime }}
+              {% if form.datetime.errors %}
+                <div class="text-red-600 text-sm mt-1">{{ form.datetime.errors }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="flex justify-end space-x-4">
+            <a href="{% url 'announcements:index' %}" 
+               class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600">
+              Cancel
+            </a>
+            <button type="submit" 
+                    class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+              <i class="fas fa-plus mr-2"></i>Create Announcement
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  {% include 'partials/footer.html' %}
+</body>
+</html>
