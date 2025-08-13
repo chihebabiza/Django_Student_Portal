@@ -19,38 +19,46 @@ A Django-based student portal application for managing announcements and student
 ## Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <your-repo-url>
    cd student_portal
    ```
 
 2. **Create and activate virtual environment**
+
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
 3. **Install dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
 
 4. **Set up environment variables**
+
    ```bash
    cp .env.example .env
    ```
+
    Edit `.env` file and update the following:
+
    - `SECRET_KEY`: Generate a new Django secret key
    - `DEBUG`: Set to `False` for production
    - `ALLOWED_HOSTS`: Add your domain names for production
 
 5. **Run database migrations**
+
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
 
 6. **Create superuser (optional)**
+
    ```bash
    python manage.py createsuperuser
    ```
@@ -86,12 +94,12 @@ student_portal/
 
 ### Environment Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `SECRET_KEY` | Django secret key | Required |
-| `DEBUG` | Debug mode | `True` |
+| Variable        | Description        | Default               |
+| --------------- | ------------------ | --------------------- |
+| `SECRET_KEY`    | Django secret key  | Required              |
+| `DEBUG`         | Debug mode         | `True`                |
 | `ALLOWED_HOSTS` | Allowed host names | `localhost,127.0.0.1` |
-| `DB_NAME` | Database name | `db.sqlite3` |
+| `DB_NAME`       | Database name      | `db.sqlite3`          |
 
 ### Database
 
@@ -120,6 +128,7 @@ The project uses SQLite by default. For production, you can configure PostgreSQL
 ### Admin Features
 
 If you have admin privileges:
+
 1. Log in to the admin panel at `/admin/`
 2. Create and manage announcements
 3. Manage user accounts and permissions
@@ -145,6 +154,7 @@ If you have admin privileges:
 For production deployment:
 
 1. Set environment variables:
+
    ```bash
    DEBUG=False
    ALLOWED_HOSTS=yourdomain.com
@@ -154,6 +164,7 @@ For production deployment:
 2. Configure a production database (PostgreSQL recommended)
 
 3. Set up static file serving:
+
    ```bash
    python manage.py collectstatic
    ```
