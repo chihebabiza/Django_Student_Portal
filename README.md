@@ -1,16 +1,16 @@
 # Student Portal
 
-A Django-based student portal application for managing announcements and stude| Variable        | Description        | Default               |
-|-----------------|--------------------|-----------------------|
-| `SECRET_KEY`    | Django secret key  | Required              |
-| `DEBUG`         | Debug mode         | `True`                |
-| `ALLOWED_HOSTS` | Allowed host names | `localhost,127.0.0.1` |
-| `DB_ENGINE`     | Database engine    | `django.db.backends.mysql` |
-| `DB_NAME`       | Database name      | `student_portal_db`   |
-| `DB_USER`       | Database user      | `root`                |
-| `DB_PASSWORD`   | Database password  | Required              |
-| `DB_HOST`       | Database host      | `localhost`           |
-| `DB_PORT`       | Database port      | `3306`                |
+| A Django-based student portal application for managing announcements and stude | Variable           | Description                | Default |
+| ------------------------------------------------------------------------------ | ------------------ | -------------------------- | ------- |
+| `SECRET_KEY`                                                                   | Django secret key  | Required                   |
+| `DEBUG`                                                                        | Debug mode         | `True`                     |
+| `ALLOWED_HOSTS`                                                                | Allowed host names | `localhost,127.0.0.1`      |
+| `DB_ENGINE`                                                                    | Database engine    | `django.db.backends.mysql` |
+| `DB_NAME`                                                                      | Database name      | `student_portal_db`        |
+| `DB_USER`                                                                      | Database user      | `root`                     |
+| `DB_PASSWORD`                                                                  | Database password  | Required                   |
+| `DB_HOST`                                                                      | Database host      | `localhost`                |
+| `DB_PORT`                                                                      | Database port      | `3306`                     |
 
 ### Database
 
@@ -19,17 +19,20 @@ The project is configured to use **MySQL** as the primary database. You can also
 #### MySQL Setup (Recommended)
 
 1. **Install MySQL server:**
+
    ```bash
    sudo apt update
    sudo apt install mysql-server mysql-client libmysqlclient-dev
    ```
 
 2. **Create the database:**
+
    ```bash
    sudo mysql -e "CREATE DATABASE student_portal_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
    ```
 
 3. **Set MySQL root password:**
+
    ```bash
    sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password'; FLUSH PRIVILEGES;"
    ```
@@ -47,13 +50,15 @@ The project is configured to use **MySQL** as the primary database. You can also
 #### Alternative Database Configurations
 
 **SQLite (Development only):**
+
 ```env
 DB_ENGINE=django.db.backends.sqlite3
 DB_NAME=db.sqlite3
 ```
 
 **PostgreSQL (Production recommended):**
-```env
+
+````env
 DB_ENGINE=django.db.backends.postgresql
 DB_NAME=student_portal_db
 DB_USER=your_db_user
@@ -83,7 +88,7 @@ DB_PORT=5432
    ```bash
    git clone <your-repo-url>
    cd student_portal
-   ```
+````
 
 2. **Create and activate virtual environment**
 
