@@ -1,0 +1,45 @@
+<nav class="bg-blue-800 text-white shadow-lg sticky top-0 z-50">
+  <div class="container mx-auto px-4 flex justify-between items-center py-4">
+    <div class="flex items-center space-x-2">
+      <i class="fas fa-graduation-cap text-2xl"></i>
+      <a href="{% url 'index' %}" class="text-2xl font-bold">UniPortal</a>
+    </div>
+
+    <div class="hidden md:flex items-center space-x-6">
+      <a href="{% url 'index' %}" class="hover:text-blue-200">Home</a>
+      {% if user.is_authenticated %}
+      <a
+        href="{% url 'logout' %}"
+        class="bg-white text-blue-800 hover:bg-gray-100 px-4 py-2 rounded"
+        >Logout</a>
+      {% else %}
+      <a
+        href="{% url 'login' %}"
+        class="bg-white text-blue-800 hover:bg-gray-100 px-4 py-2 rounded"
+        >Login</a>
+      {% endif %}
+    </div>
+
+    <div class="md:hidden">
+      <button id="mobile-menu-button" class="text-white">
+        <i class="fas fa-bars text-2xl"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden pb-4">
+    <a href="{% url 'index' %}" class="block py-2 px-4 hover:bg-blue-700 rounded">Home</a>
+    {% if user.is_authenticated %}
+    <a
+      href="{% url 'logout' %}"
+      class="block py-2 px-4 bg-blue-700 hover:bg-blue-600 rounded text-center"
+      >Logout</a>
+    {% else %}
+    <a
+      href="{% url 'login' %}"
+      class="block py-2 px-4 bg-blue-700 hover:bg-blue-600 rounded text-center"
+      >Login</a>
+    {% endif %}
+  </div>
+</nav>
